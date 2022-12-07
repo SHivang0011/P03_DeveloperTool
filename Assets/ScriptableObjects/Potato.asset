@@ -17,3 +17,4 @@ MonoBehaviour:
   Description: This is a potato!
   Icon: {fileID: -6160415447981303602, guid: 79296ca2cc675554eacb098a56dc887e, type: 3}
   MaxStackSize: 1
+  GoldValue: 0
