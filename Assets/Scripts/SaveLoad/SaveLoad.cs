@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,8 +14,12 @@ public static class SaveLoad
     private static string directory = "/SaveData/";
     private static string fileName = "SaveGame.sav";
 
+    private static readonly string keyWord = "1361315";
+
     public static bool Save(SaveData data)
     {
+        bool encryptData = SaveGameManager.EncryptSaveFile;
+        
         OnSaveGame?.Invoke();
 
         string dir = Application.persistentDataPath + directory;
@@ -24,8 +30,18 @@ public static class SaveLoad
             Directory.CreateDirectory(dir);
 
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(dir + fileName, json);
         
+
+        if (encryptData)
+        {
+            var encryptedJson = EncryptDecrypt(json);
+            File.WriteAllText(dir + fileName, encryptedJson);
+        }
+        else
+        {
+            File.WriteAllText(dir + fileName, json);
+        }
+
         Debug.Log("Saving game");
 
         return true;
@@ -33,15 +49,20 @@ public static class SaveLoad
 
     public static SaveData Load()
     {
+        bool needsDecryption = SaveGameManager.EncryptSaveFile;
+        
         string fullPath = Application.persistentDataPath + directory + fileName;
         SaveData data = new SaveData();
 
         if (File.Exists(fullPath))
         {
-            string json = File.ReadAllText(fullPath);
-            data = JsonUtility.FromJson<SaveData>(json);
-            
+            var jsonData = File.ReadAllText(fullPath);
+
+            data = JsonUtility.FromJson<SaveData>(needsDecryption ? EncryptDecrypt(jsonData) : jsonData);
+
             OnLoadGame?.Invoke(data);
+            
+            
         }
         else
         {
@@ -57,4 +78,18 @@ public static class SaveLoad
 
         if (File.Exists(fullPath)) File.Delete(fullPath);
     }
+
+    private static string EncryptDecrypt(string data)
+    {
+        string result = "";
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            result += (char) (data[i] ^ keyWord[i % keyWord.Length]);
+        }
+
+        return result;
+    }
+
+
 }

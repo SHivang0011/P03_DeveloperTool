@@ -10,6 +10,7 @@ public class SaveData
     public SerializableDictionary<string, ItemPickUpSaveData> activeItems;
 
     public SerializableDictionary<string, InventorySaveData> chestDictionary;
+    public SerializableDictionary<string, ShopSaveData> _shopKeeperDictionary;
 
     public InventorySaveData playerInventory;
 
@@ -19,5 +20,6 @@ public class SaveData
         activeItems = new SerializableDictionary<string, ItemPickUpSaveData>();
         chestDictionary = new SerializableDictionary<string, InventorySaveData>();
         playerInventory = new InventorySaveData();
+        _shopKeeperDictionary = new SerializableDictionary<string, ShopSaveData>();
     }
 }

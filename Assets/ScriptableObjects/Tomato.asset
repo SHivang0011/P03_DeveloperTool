@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c4e3f5e196ad84cbef2ad2ebe7c428, type: 3}
   m_Name: Tomato
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 50
   DisplayName: Tomato
   Description: This is a tomato!!
   Icon: {fileID: 3467876396792827902, guid: 79296ca2cc675554eacb098a56dc887e, type: 3}
   MaxStackSize: 5
+  GoldValue: 2
+  ItemPrefab: {fileID: 0}

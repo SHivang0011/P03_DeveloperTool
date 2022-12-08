@@ -7,8 +7,14 @@ public class SaveGameManager : MonoBehaviour
 {
     public static SaveData data;
 
+    public bool useEncryption = false;
+
+    public static bool EncryptSaveFile = false;
+
     private void Awake()
     {
+        EncryptSaveFile = useEncryption;
+        
         data = new SaveData();
         SaveLoad.OnLoadGame += LoadData;
     }
